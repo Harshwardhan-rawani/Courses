@@ -1,4 +1,4 @@
-const Video = require('../models/Video');
+const Video = require('../models/video');
 
 const videoupload = async (req, res) => {
     const { course, topic, subtopic } = req.body;
