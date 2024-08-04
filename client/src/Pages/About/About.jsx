@@ -2,13 +2,16 @@ import React from 'react'
 import carousel1 from "../../assets/img/carousel-1.jpg"
 import Aboutclg from '../../Components/About/Aboutclg'
 import Footer from '../../Components/Footer/Footer'
+
 function About() {
+
+
   return (
    <>
     <section className={`bg-center bg-no-repeat  bg-gray-700 bg-blend-multiply bg-cover`} style={{ backgroundImage: `url(${carousel1}`}}>
   <div className="px-4 mx-auto max-w-screen-xl text-center py-14">
     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-About
+   About
     </h1>
     <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
       Here at Flowbite we focus on markets where technology, innovation, and
