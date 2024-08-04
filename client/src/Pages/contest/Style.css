@@ -1,0 +1,28 @@
+/* Additional styling for Monaco Editor scrollbars */
+.monaco-editor .scroll-decoration {
+    display: none !important;
+  }
+  
+  .monaco-editor .monaco-scrollable-element {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+  
+  .monaco-editor .monaco-scrollable-element::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .monaco-editor .monaco-scrollable-element::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .monaco-editor .monaco-scrollable-element::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .monaco-editor .monaco-scrollable-element::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  

@@ -1,0 +1,22 @@
+.animate {
+  animation: slide 0.4s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+@keyframes slide {
+    from {transform: translateY(-100%);}
+    to{transform: translateY(0%);}
+}
+
+
+.animate_menu {
+  animation: slide 0.4s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes slide {
+  from {transform: translateY(-100%);}
+  to{transform: translateY(0%);}
+}
