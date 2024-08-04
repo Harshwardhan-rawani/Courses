@@ -9,6 +9,8 @@ import { AuthContext } from '../../Context/Authcontext';
 function Navbar() {
   const [isScroll, setIsScroll] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [dropmenu,  setDropmenu] = useState(false);
+  const [loginmenu, setLoginmenu] = useState(false);
   const location = useLocation();
   const { token, login, logout } = useContext(AuthContext);
 
@@ -88,7 +90,7 @@ function Navbar() {
                   id="dropdownDelayButton"
                   type="button"
                   className="font-medium text-black text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={() => setMenu(!menu)}
+                  onClick={() => setDropmenu(!dropmenu)}
                 >
                   Practice
                   <svg
@@ -108,7 +110,7 @@ function Navbar() {
                   </svg>
                 </button>
                 <div
-                  className={`absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ${menu ? 'block' : 'hidden'}`}
+                  className={`absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ${dropmenu ? 'block z-50' : 'hidden'}`}
                 >
                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>
@@ -146,8 +148,7 @@ function Navbar() {
                   </button>
                 ) : (
                   <button
-                    data-modal-target="authentication-modal"
-                    data-modal-toggle="authentication-modal"
+                    onClick={() => setLoginmenu(!loginmenu)}
                     className="block text-white bg-orange-400 border-2 transition duration-300 border-transparent hover:text-orange-400 hover:border-orange-400 hover:bg-transparent font-medium rounded-lg text-sm px-5 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     type="button"
                   >
@@ -160,8 +161,8 @@ function Navbar() {
         </div>
       </nav>
 
-      <Login />
-      <Signup />
+      <Login loginmenu={loginmenu} setLoginmenu={setLoginmenu} />
+
     </>
   );
 }
