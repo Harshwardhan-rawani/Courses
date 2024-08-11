@@ -127,7 +127,7 @@ function Sidebar() {
           <li>
             <Link
               to={"dashboard"}
-              className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white transition duration-300 hover:bg-orange-400 dark:hover:bg-gray-700 group ${location.pathname==="/admin/dashboard"?"bg-orange-500":""}`}
+              className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white transition duration-300 hover:bg-orange-400 dark:hover:bg-gray-700 group ${location.pathname==="/admin"?"bg-orange-500":""}`}
             >
              <MdDashboard className='text-white text-2xl' />
               <span className="ms-3 text-white">Dashboard</span>
@@ -144,7 +144,15 @@ function Sidebar() {
             </Link>
           </li>
  
-         
+          <li>
+            <Link
+              to={"videos"}
+              className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white transition duration-300 hover:bg-orange-400 dark:hover:bg-gray-700 group ${location.pathname==="/admin/videos"?"bg-orange-500":""}`}
+            >
+             <MdDashboard className='text-white text-2xl' />
+              <span className="ms-3 text-white">Videos</span>
+            </Link>
+          </li>
         
          
         </ul>

@@ -16,6 +16,8 @@ import Sidebar from './Admin/Sidebar';
 import Dashbord from './Admin/Dashbord';
 import Courses from './Admin/Courses';
 import Videoplayer from './Components/videoplayer/videoplayer';
+import Videos from './Admin/Videos';
+import Showlecture from './Admin/Showlecture';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -38,8 +40,10 @@ function App() {
           <Route path="/enroll/:name" element={<Enroll/>} />
           {/* admin */}
           <Route path="/admin/*" element={<Sidebar />}>
-             <Route path="dashboard" element={<Dashbord />} />
+             <Route path="" element={<Dashbord />} />
              <Route path="courses" element={<Courses />} />
+             <Route path="videos" element={<Videos/>} />
+             <Route path="videos/:name" element={<Showlecture/>} />
              <Route path="courses/:name" element={<VideoUploadForm/>} />
          
         </Route>

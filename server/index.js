@@ -9,6 +9,7 @@ const getconnection = require("./Connection")
 getconnection(process.env.MONGODB_URL )
 //model
 const auth = require("./models/Auth")
+const course = require("./routes/course")
 //routes 
 const compiler = require("./routes/compiler")
 const video = require("./routes/video")
@@ -25,4 +26,5 @@ app.use(cors())
 app.use('/api', compiler);
 app.use("/",authroute)
 app.use("/",video)
+app.use("/",course)
 app.listen(Port,()=>{console.log(`Server connected on localhost: ${Port}`)})

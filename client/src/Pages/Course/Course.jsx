@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosArrowForward } from "react-icons/io";
+import axios from 'axios';
 import carousel1 from "../../assets/img/carousel-1.jpg";
 import image from "../../assets/img/course-1.jpg";
 import Footer from '../../Components/Footer/Footer';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+
 function Course() {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/courses`);
+        setCourses(res.data.courses);
+      } catch (err) {
+        console.log(err.response?.data?.message || 'Failed to fetch courses');
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   return (
     <>
       <section className={`bg-center bg-no-repeat bg-gray-700 bg-blend-multiply bg-cover`} style={{ backgroundImage: `url(${carousel1})` }}>
@@ -34,13 +51,13 @@ function Course() {
       <br />
 
       <div className='lg:mx-32 mx-20 grid md:grid-cols-4 grid-cols-1 gap-4'>
-        {["HTML", "CSS", "C", "PYTHON"].map((item, index) => (
+        {courses.map((course, index) => (
           <div className='shadow-lg group overflow-hidden transition duration-300 hover:-translate-y-2' key={index}>
             <div className='relative'>
-              <img src={image} alt="" className='transition duration-300 group-hover:scale-105 h-52 overflow-hidden' />
+              <img src={`${import.meta.env.VITE_API_URL}/${course.image}`} alt="" className='transition w-full duration-300 group-hover:scale-105 h-52 overflow-hidden' />
             </div>
             <div className='p-4 transition duration-300 group-hover:bg-orange-400'>
-              <h1 className='font-bold text-black text-xl transition duration-300 group-hover:text-white'>{item}</h1>
+              <h1 className='font-bold text-black text-xl transition duration-300 group-hover:text-white capitalize'>{course.name}</h1>
 
               <div className="flex items-center">
                 {Array(4).fill(0).map((_, idx) => (
@@ -56,17 +73,17 @@ function Course() {
                 <p className="ml-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
               </div>
 
-              <div className='transition duration-300 z-30 group-hover:text-white text-gray-500 my-5'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam</div>
+              <div className='transition duration-300 z-30 group-hover:text-white text-gray-500 my-5'>{course.description}</div>
 
-              <Link to={`/enroll/${item}`}>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-orange-400 z-40 hover:text-white group-hover:border-white group-hover:bg-transparent text-white px-4 py-2 border-2 border-transparent transition duration-300"
-              >
-                Enroll
-              </motion.button>
+              <Link to={`/enroll/${course.name}`}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="bg-orange-400 z-40 hover:text-white group-hover:border-white group-hover:bg-transparent text-white px-4 py-2 border-2 border-transparent transition duration-300"
+                >
+                  Enroll
+                </motion.button>
               </Link>
             
             </div>

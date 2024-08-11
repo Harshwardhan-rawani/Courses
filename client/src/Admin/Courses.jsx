@@ -1,12 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { MdDelete } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Courses() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [courseName, setCourseName] = useState('');
+  const [image, setImage] = useState(null);
+  const [courses, setCourses] = useState([]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/courses`);
+        setCourses(res.data.courses);
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'Failed to fetch courses');
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', courseName.toLowerCase());
+    formData.append('image', image);
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/courses`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      toast.success(res.data.message);
+      setCourseName('');
+      setImage(null);
+      toggleModal();
+      const updatedCourses = await axios.get(`${import.meta.env.VITE_API_URL}/courses`);
+      setCourses(updatedCourses.data.courses);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to add course');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/courses/${id}`);
+      toast.success(res.data.message);
+
+      const updatedCourses = await axios.get(`${import.meta.env.VITE_API_URL}/courses`);
+      setCourses(updatedCourses.data.courses);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete course');
+    }
   };
 
   return (
@@ -14,11 +67,16 @@ function Courses() {
       <div className='text-black text-xl font-bold bg-white border-2 p-4'>
         Courses
       </div>
-      <div className='mt-5 grid md:grid-cols-4 grid-cols-2 gap-5 m-10'>
-        <Link to={"C"} className='shadow-xl cursor-pointer relative p-16 group transition duration-300 hover:bg-orange-500 flex justify-center w-full'>
-          <div className='text-xl font-bold transition duration-300 text-black group-hover:text-white'>C Programing</div>
-          <div className='absolute  right-5 top-5 group-hover:text-white text-red-500 text-xl'><MdDelete /></div>
-        </Link>
+      <div className='mt-5 grid md:grid-cols-4 grid-cols-2 gap-5 m-10 '>
+        {courses.map((course) => (
+          <div key={course._id} className='shadow-xl cursor-pointer relative p-16 group transition duration-300 bg-orange-400 hover:bg-orange-500 flex flex-col items-center w-full'>
+            {course.image && (
+              <img src={`${import.meta.env.VITE_API_URL}/${course.image}`} alt={course.name} className='w-32 h-32 object-cover mb-4' />
+            )}
+            <Link to={`${course.name}`} className='text-xl font-bold transition duration-300 text-white group-hover:text-white capitalize'>{course.name}</Link>
+            <div className='absolute right-5 top-5 group-hover:text-white text-red-700 text-2xl' onClick={() => handleDelete(course._id)}><MdDelete /></div>
+          </div>
+        ))}
       </div>
       <div
         className='m-10 bg-green-400 text-center p-3 font-bold cursor-pointer'
@@ -63,11 +121,11 @@ function Courses() {
                 </button>
               </div>
               <div className='p-4 md:p-5'>
-                <form className='space-y-4' action='#'>
+                <form className='space-y-4' onSubmit={handleSubmit}>
                   <div>
                     <label
                       htmlFor='course'
-                      className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                      className='block mb-2  text-sm font-medium text-gray-900 dark:text-white'
                     >
                       Course Name
                     </label>
@@ -77,13 +135,29 @@ function Courses() {
                       id='course'
                       className='bg-gray-50 border-gray-300 text-gray-900 text-sm border-0 border-b-2 bg-transparent focus:ring-0 focus:border-b-orange-400 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
                       placeholder='python?'
-                      required=''
+                      value={courseName}
+                      onChange={(e) => setCourseName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor='image'
+                      className='block mb-2  text-sm font-medium text-gray-900 dark:text-white'
+                    >
+                      Course Image
+                    </label>
+                    <input
+                      type='file'
+                      name='image'
+                      id='image'
+                      className='bg-gray-50 border-gray-300 text-gray-900 text-sm block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+                      onChange={(e) => setImage(e.target.files[0])}
                     />
                   </div>
                   <button
                     type='submit'
                     className='w-full text-white bg-orange-500 hover:bg-orange-400 focus:ring-0 font-medium text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                    onClick={toggleModal}
                   >
                     Add Course
                   </button>
